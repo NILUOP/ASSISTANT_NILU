@@ -29,6 +29,8 @@ def process_command(c):
         wb.open("https://www.youtube.com")
     elif "open chatgpt" or "open chat gpt" or "open chat g p t" in c.lower():
         wb.open("https://www.chatgpt.com")
+    elif "open linkedin" or "open linked in" or "open link in" in c.lower():
+        wb.open("https://www.linkedin.com")
     else:
         print("unknown command")
 
