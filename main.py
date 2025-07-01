@@ -26,19 +26,19 @@ if(__name__ == "__main__"):
 
     while True:
         try:
-            audio_path = recorder.record(counter)
+            audio_path = recorder.record(counter,5)
             result = transcriber.transcribe(audio_path)
             counter += 1
             if "hello" in result.lower():
                 print("hotword found!!")
                 speaker.speak("ready to take command")
-                audio_path = recorder.record(counter)
+                audio_path = recorder.record(counter,8)
                 command = transcriber.transcribe(audio_path)
                 counter += 1
 
                 command_processor.process_command(command)
 
-            time.sleep(1)  # Optional pause
+            time.sleep(2)  # Optional pause
         except KeyboardInterrupt:
             print("🛑 Exiting...")
             break
