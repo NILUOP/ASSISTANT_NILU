@@ -1,3 +1,6 @@
+# file for music list
+
+# contains dictionary of song and their location
 eng_music = {
     "alone" : r"D:\songs\Music(eng)\Alone, Pt. II.mp3",
     "bad boy" : r"D:\songs\Music(eng)\Bad Boy (feat. Luana Kiara).mp3",

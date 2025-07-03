@@ -1,3 +1,5 @@
+# music player library
+
 import os
 import vlc
 import time
@@ -6,7 +8,9 @@ import threading
 import speaker
 import music_list
 
+# MediaPlayer class
 class MediaPlayer:
+    # setup for playing music
     def __init__(self, song_dict):
         self.song_dict = song_dict
         self.song_names = list(song_dict.keys())
@@ -21,6 +25,7 @@ class MediaPlayer:
         self.monitor_thread.daemon = True
         self.monitor_thread.start()
 
+    #function which plays music 
     def play(self, index=None):
         if index is not None:
             self.current_index = index
@@ -38,12 +43,14 @@ class MediaPlayer:
         print(f"▶ Playing: {os.path.basename(song_name)}")
         speaker.speak(f"Playing: {os.path.basename(song_name)}")
 
+    # function which pauses music
     def pause(self):
         if self.player:
             self.player.pause()
             print("⏸ Paused")
             speaker.speak("Paused")
     
+    # function which resumes music
     def resume(self):
         if self.player:
             state = self.player.get_state()
@@ -55,7 +62,7 @@ class MediaPlayer:
                 print("⚠ Not paused — can't resume.")
                 speaker.speak("Not paused — can't resume.")
 
-
+    # function which stops the music
     def stop(self):
         if self.player:
             self.player.stop()
@@ -63,6 +70,7 @@ class MediaPlayer:
             print("⏹ Stopped")
             speaker.speak("Stopped")
 
+    # function to play next song
     def next_song(self):
         if not self.song_names:
             return
@@ -75,6 +83,7 @@ class MediaPlayer:
             self.stack.append(self.current_index)
             self.play(self.current_index)
 
+    # function to play previous song
     def prev_song(self):
         if not self.song_names:
             return
@@ -90,7 +99,7 @@ class MediaPlayer:
                 self.current_index = (self.current_index - 1) % len(self.song_names)
                 self.play(self.current_index)
 
-
+    # function to turn on-off the shuffle mode
     def shuffle_songs(self):
         if(self.shuffle == True):
             self.shuffle = False
@@ -99,15 +108,18 @@ class MediaPlayer:
             self.shuffle = True
             speaker.speak("shuffle on")
 
+    # function to play song by name takes name of song as input
     def play_by_name(self, name):
         if name in self.song_dict:
             self.current_index = self.song_names.index(name)
             self.play(self.current_index)
 
+    # stop the current playing song
     def _stop_if_playing(self):
         if self.player and self.player.is_playing():
             self.player.stop()
 
+    # function to play the next song if current song is completed
     def _monitor_player(self):
         while True:
             if self.player and self.playing:
@@ -117,6 +129,7 @@ class MediaPlayer:
                     self.next_song()
             time.sleep(5)
 
+    # function to show all the songs of the playlist
     def show_playlist(self):
         print("🎵 Playlist:")
         for i, song in enumerate(self.song_names):

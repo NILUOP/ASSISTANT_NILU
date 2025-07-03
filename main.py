@@ -1,3 +1,5 @@
+# main file
+
 import speech_recognition as sr
 import webbrowser as wb
 import pyttsx3
@@ -11,13 +13,14 @@ import scipy.io.wavfile as wav
 import whisper
 
 import multiprocessing as mp
+from gtts import gTTS
 
+# importing local libraries (files)
 import recorder
 import transcriber
 import speaker
 import command_processor
 
-from gtts import gTTS
 
 
 if(__name__ == "__main__"):
@@ -26,26 +29,29 @@ if(__name__ == "__main__"):
 
     while True:
         try:
-            audio_path = recorder.record(counter,5)
-            result = transcriber.transcribe(audio_path)
+            audio_path = recorder.record(counter,5) # record voice
+            result = transcriber.transcribe(audio_path) # transcrive the voice
             counter += 1
-            if "hello" in result.lower():
+
+            if "hello" in result.lower(): # first hotword to give command
                 print("hotword found!!")
                 speaker.speak("ready to take command")
-                audio_path = recorder.record(counter,8)
-                command = transcriber.transcribe(audio_path)
+                audio_path = recorder.record(counter,8) # record command duration 8 seconds
+                command = transcriber.transcribe(audio_path) # transcribe the command
                 counter += 1
 
-                command_processor.process_command(command)
+                command_processor.process_command(command) # process the command
             
-            elif "stop" in result.lower():
+            elif "stop" in result.lower(): # second hotword to stop the program
                 break
 
             time.sleep(2)  # Optional pause
-        except KeyboardInterrupt:
+
+        except KeyboardInterrupt: # keyboard interrupt - second way to stop execution
             print("🛑 Exiting...")
             break
-        except Exception as e:
+
+        except Exception as e: # exception handeling
             print("⚠️ Error:", e)
             speaker.speak("an error occured")
             time.sleep(1)
