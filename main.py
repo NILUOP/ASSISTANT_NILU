@@ -37,6 +37,9 @@ if(__name__ == "__main__"):
                 counter += 1
 
                 command_processor.process_command(command)
+            
+            elif "stop" in result.lower():
+                break
 
             time.sleep(2)  # Optional pause
         except KeyboardInterrupt:
@@ -44,4 +47,5 @@ if(__name__ == "__main__"):
             break
         except Exception as e:
             print("⚠️ Error:", e)
+            speaker.speak("an error occured")
             time.sleep(1)

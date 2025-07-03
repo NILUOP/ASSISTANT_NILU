@@ -5,8 +5,12 @@ import pyautogui
 from datetime import datetime
 import volume_changer
 import speaker
+import music_list
+import music_plyer
 
 brave_path = r"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe"
+vlc_path = r"C:\Program Files\VideoLAN\VLC\vlc.exe"
+music_path = r"D:\songs\Music(eng)"
 
 profile1 = "Profile 1" # --> gaming
 profile2 = "Profile 2" # --> nisargkumar (profectional)
@@ -17,23 +21,29 @@ def process_command(command):
 
     c = command.lower().strip(".").strip().strip(".")
 
-    if "open google" in c:
-        subprocess.Popen([brave_path, f"--profile-directory={profile4}", "https://www.google.com"])
-        # wb.open("https://www.google.com")
+    if "open" in c:
+        if "google" in c:
+            subprocess.Popen([brave_path, f"--profile-directory={profile4}", "https://www.google.com"])
+            # wb.open("https://www.google.com")
 
-    elif "open youtube" in c or "open you tube" in c:
-        subprocess.Popen([brave_path, f"--profile-directory={profile4}", "https://www.youtube.com"])
-        # wb.open("https://www.youtube.com")
+        elif "youtube" in c or "you tube" in c:
+            subprocess.Popen([brave_path, f"--profile-directory={profile4}", "https://www.youtube.com"])
+            # wb.open("https://www.youtube.com")
 
-    elif "open chatgpt" in c or "open chat gpt" in c or "open charge gpt" in c:
-        subprocess.Popen([brave_path, f"--profile-directory={profile4}", "https://www.chatgpt.com"])
-        # wb.open("https://www.chatgpt.com")
+        elif "chatgpt" in c or "chat gpt" in c or "charge gpt" in c:
+            subprocess.Popen([brave_path, f"--profile-directory={profile4}", "https://www.chatgpt.com"])
+            # wb.open("https://www.chatgpt.com")
 
-    elif "open linkedin" in c or "open linked in" in c or "open link in" in c:
-        subprocess.Popen([brave_path, f"--profile-directory={profile2}", "https://www.linkedin.com"])
+        elif "linkedin" in c or "linked in" in c or "link in" in c:
+            subprocess.Popen([brave_path, f"--profile-directory={profile2}", "https://www.linkedin.com"])
 
-    elif "open github" in c or "open github" in c:
-        subprocess.Popen([brave_path, f"--profile-directory={profile2}", "https://www.github.com"])
+        elif "github" in c or "github" in c:
+            subprocess.Popen([brave_path, f"--profile-directory={profile2}", "https://www.github.com"])
+
+        else:
+            print("unknown command")
+            speaker.speak("unknown command")
+
 
     elif "search for" in c:
         if "on youtube" in c or "on you tube" in c:
@@ -82,6 +92,40 @@ def process_command(command):
         else:
             print("unknown command")
             speaker.speak("unknown command")
+    
+    elif "play" in c or "music" in c:
+        if "play music" in c:
+            music_plyer.player.play()
+        
+        elif "play" in c:
+            song = c.replace("play ", "")
+            music_plyer.player.play_by_name(song)
+            # subprocess.Popen([vlc_path, music_path])
+            # music_plyer.player.play()
+        
+        elif "pause" in c:
+            music_plyer.player.pause()
+
+        elif "resume" in c:
+            music_plyer.player.resume()
+
+        elif "shuffle" in c or "saffal" in c or "suffolk" in c or "saffron" in c:
+            music_plyer.player.shuffle_songs()
+
+        elif "stop" in c:
+            music_plyer.player.stop()
+            
+        # else:
+        #     song = c.replace("play", "")
+        #     subprocess.Popen([vlc_path, music_list.eng_music[song]])
+
+    
+    elif "song" in c:
+        if "next" in c:
+            music_plyer.player.next_song()
+        elif "previous" in c:
+            music_plyer.player.prev_song()
+
 
     else:
         print("unknown command")
