@@ -9,6 +9,7 @@ import volume_changer
 import speaker
 import music_list
 import music_plyer
+import weather_updater
 
 brave_path = r"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe"
 # vlc_path = r"C:\Program Files\VideoLAN\VLC\vlc.exe"
@@ -127,6 +128,23 @@ def process_command(command):
             music_plyer.player.next_song()
         elif "previous" in c: # plays previous song
             music_plyer.player.prev_song()
+
+    elif "weather" in c:
+        if "current" in c:
+            l1 = c.split(" ")
+            city = l1[-1]
+            weather_report = weather_updater.get_weather(city)
+            speaker.speak(weather_report)
+
+        elif "forecast" in c:
+            l1 = c.split(" ")
+            city = l1[-1]
+            error, weather_report = weather_updater.fetch_forecast(city)
+            weather_updater.show_forecast_gui(city,weather_report)
+
+        else:
+            print("unknown command")
+            speaker.speak("unknown command")
 
 
     else: # unknown command if none of the above are found
