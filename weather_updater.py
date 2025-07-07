@@ -8,7 +8,11 @@ from tkinter import ttk
 API_KEY = api.weather_api
 BASE_URL = "http://api.weatherapi.com/v1/forecast.json"
 
+# this function gives current weather of the given city
+# takes city name as input
+
 def get_weather(city):
+    # featch data using api
     url = f"http://api.weatherapi.com/v1/current.json?key={API_KEY}&q={city}"
     response = requests.get(url)
     data = response.json()
@@ -16,6 +20,7 @@ def get_weather(city):
     if "error" in data:
         return f"Error: {data['error']['message']}", None
         
+    # take important parts of the feathced data
     location = data['location']['name']
     region = data['location']['region']
     temp_c = data['current']['temp_c']
@@ -33,6 +38,7 @@ def get_weather(city):
         f"Wind: {wind_kph} km/h {wind_dir}"
     )
 
+    # gives notification of the weather
     notification.notify(
         title=f"weather in {location}, {region}",
         message=f"Temp: {temp_c}°C\n"
@@ -44,7 +50,8 @@ def get_weather(city):
 
     return message
 
-
+# this function featch fore cast data for GUI function to show
+# takes city name as the input
 def fetch_forecast(city):
     params = {
         "key": API_KEY,
@@ -55,6 +62,7 @@ def fetch_forecast(city):
     }
 
     try:
+        # featch data using api
         response = requests.get(BASE_URL, params=params)
         data = response.json()
 
@@ -63,9 +71,12 @@ def fetch_forecast(city):
 
         forecast_data = []
 
+        # generates all 3 pages
         for i, day in enumerate(data["forecast"]["forecastday"]):
             date = day["date"]
             lines = [f"\n\nHourly Forecast for {city.title()}, {data["location"]["region"]}, {data["location"]["country"]} on {date}:\n"]
+            
+            # data which is going to show in each page
             for hour in day["hour"]:
                 time = hour["time"].split(" ")[1]
                 temp = hour["temp_c"]
@@ -81,7 +92,7 @@ def fetch_forecast(city):
     except Exception as e:
         return f"Exception: {str(e)}", None
 
-
+# this function generate GUI for the forecast data
 def show_forecast_gui(city, forecast_data):
 
     root = tk.Tk()

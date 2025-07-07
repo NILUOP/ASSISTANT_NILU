@@ -130,19 +130,19 @@ def process_command(command):
             music_plyer.player.prev_song()
 
     elif "weather" in c:
-        if "current" in c:
+        if "current" in c: # tells current weather of [city] and also gives notification of weather
             l1 = c.split(" ")
             city = l1[-1]
             weather_report = weather_updater.get_weather(city)
             speaker.speak(weather_report)
 
-        elif "forecast" in c:
+        elif "forecast" in c: # shows 3 day hourly forecast of the [city name] using GUI
             l1 = c.split(" ")
             city = l1[-1]
             error, weather_report = weather_updater.fetch_forecast(city)
             weather_updater.show_forecast_gui(city,weather_report)
 
-        else:
+        else: # unknown command if none of the above are found
             print("unknown command")
             speaker.speak("unknown command")
 
