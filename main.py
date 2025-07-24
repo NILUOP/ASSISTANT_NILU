@@ -33,7 +33,7 @@ if(__name__ == "__main__"):
             result = transcriber.transcribe(audio_path) # transcrive the voice
             counter += 1
 
-            if "hello" in result.lower(): # first hotword to give command
+            if "hello" in result.lower() or "hi" in result.lower() or "nilu" in result.lower() or "nello" in result.lower(): # first hotword to give command
                 print("hotword found!!")
                 speaker.speak("ready to take command")
                 audio_path = recorder.record(counter,8) # record command duration 8 seconds
@@ -43,6 +43,7 @@ if(__name__ == "__main__"):
                 command_processor.process_command(command) # process the command
             
             elif "stop" in result.lower(): # second hotword to stop the program
+                speaker.speak("session terminated")
                 break
 
             time.sleep(2)  # Optional pause
